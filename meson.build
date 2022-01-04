@@ -34,31 +34,33 @@ boot = executable('boot.bin',
         '-T' + (meson.source_root() / 'boot/boot.lds'),
         '-static',
         '-nostdlib',
-        '-m16'
+        '-m32'
     ],
-    c_args: ['-m16', '-march=i386'],
-    cpp_args: ['-m16', '-march=i386']
+    c_args: ['-m32', '-march=i386'],
+    cpp_args: ['-m32', '-march=i386']
 )
 
-stage2_rmode = executable('stage2-realmode.bin',
-    'stage2/realmode/realmode.cpp',
+stage2 = executable('stage2.bin',
+    'stage2/main.cpp',
     'stage2/realmode/e820.cpp',
+    'stage2/realmode/realmode_interrupt.cpp',
+    'stage2/realmode/a20.S',
     'stage2/realmode/video.cpp',
-    'stage2/realmode/fetch_far.S',
+    'stage2/utils.cpp',
     link_args: [
-        '-T' + (meson.source_root() / 'stage2/realmode/link.lds'),
+        '-T' + (meson.source_root() / 'stage2/link.lds'),
         '-static',
         '-nostdlib',
-        '-m16'
+        '-m32'
     ],
-    c_args: ['-m16', '-march=i386'],
-    cpp_args: ['-m16', '-march=i386']
+    c_args: ['-m32', '-march=i386'],
+    cpp_args: ['-m32', '-march=i386']
 )
 
 bootloaderimg = custom_target(
     'bootloader',
     output : 'bootloader.img',
-    input : [boot, stage2_rmode],
+    input : [boot, stage2],
     command : [kernel_gen, '@BUILD_ROOT@', '@OUTPUT@', '@INPUT0@', '@INPUT1@']
 )
 

@@ -1,5 +1,17 @@
 #ifndef __STAGE2_REALMODE_REALMODE_H__
 #define __STAGE2_REALMODE_REALMODE_H__
+#include <cstdint>
+
+struct far_ptr
+{
+    uint16_t segment;
+    uint16_t offset;
+
+    inline uint32_t to_ptr()
+    {
+        return (segment << 4) + offset;
+    }
+};
 
 struct cpustate
 {
@@ -30,10 +42,10 @@ extern "C" {
     void a20(); // tries to enable the a20 line. Returns true if a20 is enabled
 }
 
-cpustate bios_interrupt_pmode(const cpustate& state); // calls a bios interrupt from protected mode
-cpustate bios_interrupt_realmode(const cpustate& state); // calls a bios interrupt from real mode
+cpustate bios_interrupt_pmode(uint8_t n, cpustate state); // calls a bios interrupt from protected mode
+cpustate bios_interrupt_realmode(uint8_t n, cpustate state); // calls a bios interrupt from real mode
 
 #define BEGIN_16 __asm__ __volatile__(".code16\n.code16gcc")
-#define BEGIN_32 __asm__ __volatile__(".code32\n.code32gcc")
+#define BEGIN_32 __asm__ __volatile__(".code32")
 
 #endif

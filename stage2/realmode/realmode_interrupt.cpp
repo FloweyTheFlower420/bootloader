@@ -1,12 +1,12 @@
-
+#include "realmode.h"
 // this shall enter 16 bit mode
 // execute interrupt
 // and return to 32 bit mode
 
-#define SWITCH_INTERRUPT_N(n, in, out)  \
-    case n:                             \
+#define SWITCH_INTERRUPT_N(v, in, out)  \
+    case v:                             \
     __asm__ __volatile__(               \
-        "int $0x" ## n                  \
+        "int $" #v                     \
         : "=a"(out.a),                  \
           "=b"(out.b),                  \
           "=c"(out.c),                  \
@@ -22,17 +22,17 @@
     );                                  \
     __asm__ __volatile__(               \
         "pushf\n"                       \
-        "pop %eax"                      \
+        "pop %%eax"                      \
         : "=a"(out.flags)               \
         :                               \
     );                                  \
     break;
 
 
-static uint16_t realmode_sp = 0x3000;
-static uint16_t pmode_sp = 0x7000;
+uint16_t realmode_sp = 0x3000;
+uint16_t pmode_sp = 0x7000;
 
-cpustate bios_interrupt_pmode(uint8_t n, const cpustate& state)
+cpustate bios_interrupt_pmode(uint8_t n, cpustate state)
 {
     BEGIN_32;
     static uint8_t gdt[] = {
@@ -53,33 +53,33 @@ cpustate bios_interrupt_pmode(uint8_t n, const cpustate& state)
 
     __asm__ goto(
         "cli\n"
-        "lgdtl %0\n"
-        "jmp $0x8:%l1"
+        "lgdt %0\n"
+        "ljmp $0x8, $%l1"
         : 
-        : "r"(&gdtr)            
+        : "m"(gdtr)
         :
         : farjump_16
     );
     BEGIN_16;
 farjump_16:
     __asm__ __volatile__(
-        "mov $0x10, %ax\n"
-    	"mov %ax, %ds\n"
-    	"mov %ax, %es\n"
-    	"mov %ax, %fs\n"
-    	"mov %ax, %gs\n"
-    	"mov %ax, %ss\n"
+        "mov $0x10, %%ax\n"
+    	"mov %%ax, %%ds\n"
+    	"mov %%ax, %%es\n"
+    	"mov %%ax, %%fs\n"
+    	"mov %%ax, %%gs\n"
+    	"mov %%ax, %%ss\n"
         :
         :
         : "ax"
     );
 
-    __asm__ __volatile__("lidt %0" : : "r"(&idtr));
+    __asm__ __volatile__("lidt %0" : : "m"(idtr));
     __asm__ goto(
-        "mov %cr0, %eax\n"
-        "and $0xfe, %al\n"
-        "mov %eax, %cr0\n"
-        "jmp $0x0:%l0"
+        "mov %%cr0, %%eax\n"
+        "and $0xfe, %%al\n"
+        "mov %%eax, %%cr0\n"
+        "ljmp $0x0, $%l0"
         :
         :
         : "eax"
@@ -87,14 +87,14 @@ farjump_16:
     );
 realmode:
     __asm__ __volatile__(
-        "xor %ax, %ax\n"
-    	"mov %ax, %ds\n"
-    	"mov %ax, %es\n"
-    	"mov %ax, %fs\n"
-    	"mov %ax, %gs\n"
-    	"mov %ax, %ss\n"
-        "mov %sp, pmode_sp\n"
-        "mov realmode_sp, %sp"
+        "xor %%ax, %%ax\n"
+    	"mov %%ax, %%ds\n"
+    	"mov %%ax, %%es\n"
+    	"mov %%ax, %%fs\n"
+    	"mov %%ax, %%gs\n"
+    	"mov %%ax, %%ss\n"
+        "mov %%sp, pmode_sp\n"
+        "mov realmode_sp, %%sp"
         :
         :
         : "ax"
@@ -102,32 +102,32 @@ realmode:
 
 
     // execute interrupt and save
-    auto ret = bios_interrupt_realmode(state);
+    auto ret = bios_interrupt_realmode(n, state);
     protected_mode();
     BEGIN_32;
     return ret;
 }
 
-cpustate bios_interrupt_realmode(const cpustate& state)
+cpustate bios_interrupt_realmode(uint8_t n, cpustate in)
 {
     BEGIN_16;
-    cpustate state;
+    cpustate out;
     switch(n) 
     {
-        SWITCH_INTERRUPT_N(0x5)
-        SWITCH_INTERRUPT_N(0x8)
-        SWITCH_INTERRUPT_N(0x9)
-        SWITCH_INTERRUPT_N(0x10)
-        SWITCH_INTERRUPT_N(0x11)
-        SWITCH_INTERRUPT_N(0x12)
-        SWITCH_INTERRUPT_N(0x13)
-        SWITCH_INTERRUPT_N(0x14)
-        SWITCH_INTERRUPT_N(0x15)
-        SWITCH_INTERRUPT_N(0x16)
-        SWITCH_INTERRUPT_N(0x17)
+        SWITCH_INTERRUPT_N(0x5, in, out)
+        SWITCH_INTERRUPT_N(0x8, in, out)
+        SWITCH_INTERRUPT_N(0x9, in, out)
+        SWITCH_INTERRUPT_N(0x10, in, out)
+        SWITCH_INTERRUPT_N(0x11, in, out)
+        SWITCH_INTERRUPT_N(0x12, in, out)
+        SWITCH_INTERRUPT_N(0x13, in, out)
+        SWITCH_INTERRUPT_N(0x14, in, out)
+        SWITCH_INTERRUPT_N(0x15, in, out)
+        SWITCH_INTERRUPT_N(0x16, in, out)
+        SWITCH_INTERRUPT_N(0x17, in, out)
     }
 
-    return cpustate;
+    return out;
     BEGIN_32;
 }
 
@@ -155,9 +155,9 @@ void protected_mode()
         "mov %eax, %cr0"
     );
     // load gdt
-    __asm__ __volatile__("lgdtl %0" : : "r"(&gdtr));
+    __asm__ __volatile__("lgdt %0" : : "m"(gdtr));
     __asm__ goto (
-        "jmp $0x8:%l2"
+        "ljmp $0x8, $%l0\n"
         :
         :
         :
@@ -166,14 +166,14 @@ void protected_mode()
 pmode:
     BEGIN_32;
     __asm__ __volatile__(
-        "mov $0x10, %ax\n"
-    	"mov %ax, %ds\n"
-    	"mov %ax, %es\n"
-    	"mov %ax, %fs\n"
-    	"mov %ax, %gs\n"
-    	"mov %ax, %ss\n"
-        "mov %sp, realmode_sp\n"
-        "mov pmode_sp, %sp"
+        "mov $0x10, %%ax\n"
+    	"mov %%ax, %%ds\n"
+    	"mov %%ax, %%es\n"
+    	"mov %%ax, %%fs\n"
+    	"mov %%ax, %%gs\n"
+    	"mov %%ax, %%ss\n"
+        "mov %%sp, realmode_sp\n"
+        "mov pmode_sp, %%sp"
         :
         :
         : "ax"

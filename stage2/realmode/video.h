@@ -1,25 +1,6 @@
-#ifndef __STAGE2_REALMODE_REALMODE_H__
-#define __STAGE2_REALMODE_REALMODE_H__
+#ifndef __STAGE2_REALMODE_VIDEO_H__
+#define __STAGE2_REALMODE_VIDEO_H__
 #include <cstdint>
-
-struct memory_map
-{
-    uint64_t base;
-    uint64_t length;
-    uint32_t type;
-    uint32_t extend_bitfield;
-};
-
-struct far_ptr
-{
-    uint16_t segment;
-    uint16_t offset;
-
-    inline uint32_t to_ptr()
-    {
-        return (segment << 4) + offset;
-    }
-};
 
 struct vbe_controller_info 
 {
@@ -31,7 +12,7 @@ struct vbe_controller_info
    uint16_t total_memory_used;
 } __attribute__((packed));
 
-struct vbe_mode_info_structure
+struct vbe_mode_info
 {
     uint16_t attributes;            // deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
     uint8_t window_a;               // deprecated
@@ -70,39 +51,6 @@ struct vbe_mode_info_structure
     uint8_t reserved1[206];
 } __attribute__ ((packed));
 
-struct bootloader_packet
-{
-    uint32_t loaded_address; // DONE
-    uint32_t loaded_size;
-    uint32_t mmap_size;
-    uint32_t mmap_ptr;
-
-    uint8_t boot_device;
-
-    bool found_valid_vbe;
-
-    uint16_t vbe_version;
-    uint16_t total_memory_used;
-    uint16_t width;
-    uint16_t  height;
-    uint8_t bpp;
-
-    uint8_t red_mask;
-	uint8_t red_position;
-	uint8_t green_mask;
-	uint8_t green_position;
-	uint8_t blue_mask;
-	uint8_t blue_position;
-
-    uint32_t framebuffer;
-};
-
-extern bootloader_packet packet;
-
-memory_map* read_memory_map();
-vbe_controller_info* read_controller_info();
-vbe_mode_info_structure* read_mode_info(uint16_t);
-void set_mode(vbe_mode_info_structure* mode_struct, uint16_t mode);
-void panic(const char*);
+bool set_video_mode();
 
 #endif
