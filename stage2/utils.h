@@ -3,6 +3,5 @@
 
 void check_for_long_mode();
 void panic(const char* str);
-void* memcpy(void* dest, void* src, size_t count);
 
 #endif
