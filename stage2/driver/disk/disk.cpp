@@ -53,6 +53,7 @@ void* disk_driver::read_bytes(uint32_t bytes, uint32_t hint, uint64_t offset = 0
     auto patience = PATIENCE;
     // obtain the # of sectors to read
     uint32_t blocks = (bytes + cache_sector_size - 1) / cache_sector_size;
+    // split into
     // obtain the sector offset from offset
     uint64_t sector_start = offset / cache_sector_size;
 
