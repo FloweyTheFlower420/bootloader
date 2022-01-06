@@ -3,27 +3,31 @@
 
 static vbe_controller_info* read_controller_info()
 {
-    auto out = bios_interrupt_pmode(0x10, {.a = 0x4F00, .d = 0x14000});
+    auto out = bios_interrupt_pmode(0x10, {.a = 0x4F00, .D = 0x7000});
  
     if(out.ax() != 0x004F)
         return nullptr;
+
+    memcpy((void*)0x14000, (void*)0x7000, sizeof(vbe_controller_info));
 
     return (vbe_controller_info*)(0x14000);
 }
 
 static vbe_mode_info* read_mode_info(uint16_t mode)
 {
-    auto out = bios_interrupt_pmode(0x10, {.a = 0x4F01, .c = mode, .d = 0x14200});
+    auto out = bios_interrupt_pmode(0x10, {.a = 0x4F01, .c = mode, .D = 0x7000});
 
     if(out.ax() != 0x004F)
         return nullptr;
+
+    memcpy((void*)0x14200, (void*)0x7000, sizeof(vbe_mode_info));
 
     return (vbe_mode_info*) 0x14200;
 }
 
 static bool set_mode(uint16_t mode)
 {
-    auto out = bios_interrupt_pmode(0x10, {.a = 0x4F02, .b = mode | 0x4000, .d = 0x14200});
+    auto out = bios_interrupt_pmode(0x10, {.a = 0x4F02, .b = mode | 0x4000, .d = 0x7000});
     return out.ax() == 0x004F;
 }
 

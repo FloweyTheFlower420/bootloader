@@ -23,3 +23,9 @@ void panic(const char* str)
 
     while(1) { __asm__ __volatile__("hlt"); }
 }
+
+void* memcpy(void* dest, void* src, size_t count)
+{
+    while(count --)
+        *dest ++ = *src++;
+}

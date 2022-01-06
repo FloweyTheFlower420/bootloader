@@ -14,6 +14,7 @@ add_project_arguments(
     '-Wall',
     '-fcf-protection=none',
     '-fno-threadsafe-statics',
+    '-I' + (meson.source_root() / 'stage2/'),'
     '-mno-sse',
     '-mno-sse2',
     '-mno-mmx',

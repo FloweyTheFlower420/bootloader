@@ -1,14 +1,17 @@
 #include <cstdint>
-#include "realmode/realmode.h"
-#include "realmode/e820.h"
-#include "realmode/video.h"
-#include "utils.h"
+#include <realmode/realmode.h>
+#include <realmode/e820.h>
+#include <realmode/video.h>
+#include <utils.h>
 
 BEGIN_16;
 __asm__ ("jmpl $0x0000, $main");
 
 // 0x3000 - real mode stack pointer
 // 0x7000 - protected mode stack pointer
+// 0x7000 - real-mode buffer
+
+// 0x9000 - Disk IO Buffer
 // 0x10000 - start of data
 // 0x10000-0x14000 - e820 block
 // 0x14000 - vbe controller info
