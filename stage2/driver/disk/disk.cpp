@@ -27,6 +27,7 @@ disk_driver::disk_driver(uint8_t id)  : id(id)
     
     cache_sector_size = info->bytes_per_sector;
     cache_disk_sector_count = info->total_sectors;
+    is_valid = true;
 }
 
 /*
