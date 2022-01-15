@@ -1,12 +1,12 @@
 .code16
 .code16gcc
     // set up registers
-	xor %ax, %ax
-	mov %ax, %ds
-	mov %ax, %ss
+    xor %ax, %ax
+    mov %ax, %ds
+    mov %ax, %ss
     mov %ax, %es
 
-	mov %dl, 0x1000
+    mov %dl, 0x1000
 
     mov $0x3000, %ax
     mov %ax, %sp

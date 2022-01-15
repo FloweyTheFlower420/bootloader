@@ -12,9 +12,10 @@ add_project_arguments(
     '-fno-exceptions',
     '-Wno-ignored-attributes',
     '-Wall',
+    '-fno-stack-protector',
     '-fcf-protection=none',
     '-fno-threadsafe-statics',
-    '-I' + (meson.source_root() / 'stage2/'),'
+    '-I' + (meson.source_root() / 'stage2/'),
     '-mno-sse',
     '-mno-sse2',
     '-mno-mmx',
@@ -42,16 +43,19 @@ boot = executable('boot.bin',
 )
 
 stage2 = executable('stage2.bin',
+    'stage2/driver/disk/disk.cpp',
+    'stage2/driver/fs/fat.cpp',
     'stage2/main.cpp',
     'stage2/realmode/e820.cpp',
     'stage2/realmode/realmode_interrupt.cpp',
-    'stage2/realmode/a20.S',
     'stage2/realmode/video.cpp',
+    'stage2/realmode/a20.S',
     'stage2/utils.cpp',
     link_args: [
         '-T' + (meson.source_root() / 'stage2/link.lds'),
         '-static',
         '-nostdlib',
+        '-lgcc',
         '-m32'
     ],
     c_args: ['-m32', '-march=i386'],

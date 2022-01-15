@@ -1,4 +1,5 @@
 #include "fat.h"
+#include <cstdint>
 
 struct fat_bpb
 {
@@ -33,7 +34,8 @@ struct fat_bpb
 
 void read_fat()
 {
-    auto root_dir_sectors = ((bpb->root_entry_count * 32) + (bpb->bytes_per_sector – 1)) / bpb->bytes_per_sector;
+    fat_bpb* bpb = nullptr;
+    auto root_dir_sectors = ((bpb->root_entry_count * 32) + (bpb->bytes_per_sec - 1)) / bpb->bytes_per_sec;
     auto first_data_sector = bpb->reserved_sector_count + (bpb->fat_count * bpb->fat_size) + root_dir_sectors;
     auto cluster_count = first_data_sector / bpb->sector_per_cluster;
 }

@@ -3,6 +3,7 @@
 #include <realmode/e820.h>
 #include <realmode/video.h>
 #include <utils.h>
+#include <stage2/driver/disk/disk.h>
 
 BEGIN_16;
 __asm__ ("jmpl $0x0000, $main");
@@ -48,6 +49,8 @@ struct
         bootloader_packet.controller = (vbe_controller_info*) 0x14000;
         bootloader_packet.mode = (vbe_mode_info*) 0x14200;
     }
+    
+    disk_driver::initalize();
 
     __builtin_unreachable();
 }

@@ -1,5 +1,6 @@
 #ifndef __STAGE2_DRIVER_DISK_DISK_H__
 #define __STAGE2_DRIVER_DISK_DISK_H__
+#include <cstdint>
 
 class disk_driver
 {
@@ -8,19 +9,15 @@ class disk_driver
     uint32_t cache_sector_size;
     uint64_t cache_disk_sector_count;
 
-    static disk_drive cache[256];
-    static uint8_t present[256 / 8] = {0};
+    static disk_driver cache[256];
+    static uint8_t present[256 / 8];
 public:
-    inline static disk_driver& get_driver(uint8_t id)
-    {
-        if(present[id / 8] & (1 << (id & 0x7)))
-            return cache[id];
-        present[id / 8] |= (1 << (id & 0x7))
-        return cache[id] = disk_driver(id);
-    }
+
+    static void initalize();
+    static disk_driver& get_driver(uint8_t id);
 
     disk_driver(uint8_t id);
-
+    inline disk_driver() : valid(false) {}
     // loads <bytes> bytes of disk (minimum) from offset <offset> bytes into the disk.
     // returns a pointer to loaded address
     // the data will be loaded at hint if offset is aligned with sector_size()

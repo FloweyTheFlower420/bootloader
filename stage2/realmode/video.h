@@ -2,6 +2,16 @@
 #define __STAGE2_REALMODE_VIDEO_H__
 #include <cstdint>
 
+struct far_ptr
+{
+    uint16_t segment;
+    uint16_t offset;
+    inline void* to_ptr()
+    {
+        return (void*)(((uint16_t)segment << 4) + offset);
+    }
+} __attribute__((packed));
+
 struct vbe_controller_info 
 {
    uint32_t signature[4];

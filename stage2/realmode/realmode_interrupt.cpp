@@ -6,7 +6,7 @@
 #define SWITCH_INTERRUPT_N(v, in, out)  \
     case v:                             \
     __asm__ __volatile__(               \
-        "int $" #v                     \
+        "int $" #v                      \
         : "=a"(out.a),                  \
           "=b"(out.b),                  \
           "=c"(out.c),                  \
@@ -22,7 +22,7 @@
     );                                  \
     __asm__ __volatile__(               \
         "pushf\n"                       \
-        "pop %%eax"                      \
+        "pop %%eax"                     \
         : "=a"(out.flags)               \
         :                               \
     );                                  \
@@ -32,7 +32,7 @@
 uint16_t realmode_sp = 0x3000;
 uint16_t pmode_sp = 0x7000;
 
-cpustate bios_interrupt_pmode(uint8_t n, cpustate state)
+cpustate bios_interrupt_pmode(uint8_t n, const cpustate& state)
 {
     BEGIN_32;
     static uint8_t gdt[] = {
@@ -108,7 +108,7 @@ realmode:
     return ret;
 }
 
-cpustate bios_interrupt_realmode(uint8_t n, cpustate in)
+cpustate bios_interrupt_realmode(uint8_t n, const cpustate& in)
 {
     BEGIN_16;
     cpustate out;

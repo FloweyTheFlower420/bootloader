@@ -30,11 +30,6 @@ SECTIONS
 		*(.stack)
 	}
 
-    .sig : AT(0x8FFF)
-    {
-        BYTE(00);
-    }
-
 	end = .;
 
 	/DISCARD/ :

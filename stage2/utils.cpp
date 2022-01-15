@@ -1,4 +1,5 @@
 #include "utils.h"
+#include <cstddef>
 #include <cstdint>
 
 void check_for_long_mode()
@@ -24,8 +25,10 @@ void panic(const char* str)
     while(1) { __asm__ __volatile__("hlt"); }
 }
 
-void* memcpy(void* dest, void* src, size_t count)
+void* memcpy(void* _dest, void* _src, size_t count)
 {
-    while(count --)
+    char* src = (char*) _src;
+    char* dest = (char*) _dest;
+    while(count--)
         *dest ++ = *src++;
 }

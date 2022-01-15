@@ -1,5 +1,6 @@
-#include "realmode.h"
 #include "video.h"
+#include <realmode/realmode.h>
+#include <utils.h>
 
 static vbe_controller_info* read_controller_info()
 {
@@ -27,7 +28,8 @@ static vbe_mode_info* read_mode_info(uint16_t mode)
 
 static bool set_mode(uint16_t mode)
 {
-    auto out = bios_interrupt_pmode(0x10, {.a = 0x4F02, .b = mode | 0x4000, .d = 0x7000});
+    mode |= (uint16_t)0x4000;
+    auto out = bios_interrupt_pmode(0x10, {.a = 0x4F02, .b = mode , .d = 0x7000});
     return out.ax() == 0x004F;
 }
 
