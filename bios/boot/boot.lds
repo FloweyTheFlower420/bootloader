@@ -7,27 +7,27 @@ SECTIONS
 
     .text : 
     {
-    	code = .;
-    	*(.text)
+        code = .;
+        *(.text)
     }
 
     .rodata BLOCK(1) : ALIGN(1)
     {
-    	*(.rodata)
+        *(.rodata)
     }
 
     .data BLOCK(1) : ALIGN(1)
     {
-    	data = .;
-    	*(.data)
+        data = .;
+        *(.data)
     }
 
     .bss BLOCK(1) : ALIGN(1)
     {
-    	bss = .;
-    	*(COMMON)
-    	*(.bss)
-    	*(.stack)
+        bss = .;
+        *(COMMON)
+        *(.bss)
+        *(.stack)
     }
 
     .sig : AT(0x7DFE)
@@ -39,8 +39,8 @@ SECTIONS
 
     /DISCARD/ :
     {
-    	*(.comment)
-    	*(.eh_frame)
-    	*(.note.gnu.build-id)
+        *(.comment)
+        *(.eh_frame)
+        *(.note.gnu.build-id)
     }
 }

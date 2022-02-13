@@ -2,51 +2,32 @@
 
 namespace term
 {
-    static video_buffer* buf;
-    static void* romfont;
-    static uint8_t romfont_width;
-    static uint8_t fromfont_height;
-    static size_t bytes_per_font;
-
-    static bool get_romfont_bit(uint8_t x, uint8_t y, char ch)
-    {
-        size_t offset = ((size_t) y) * romfont_width + x;
-        size_t index = bytes_per_font * ch;
-
-        uint8_t* font = (uint8_t*) romfont;
-        uint8_t* char_font = font[index];
-
-        size_t char_index = offset >> 3; // 8 bits per uint8_t*, so divide by 8
-        size_t char_offset = offset & 7; // mask bottom 3 bits
-
-        return char_font[char_index] & (1 << char_offset);
-    }
+    static video_buffer* buffer = nullptr;
+    static const font* font_ptr = nullptr;
+    static term_status current_term_status;
 
     void set_video_buffer(video_buffer* new_buf)
     {
-        buf = new_buf;
+        buffer = new_buf;
     }
 
-    void set_font(void* fontbuffer, uint8_t width, uint8_t height)
+    void set_font(const font& a)
     {
-        romfont = fontbuffer;
-        bytes_per_font = (size_t)width * (size_t)height;
-        romfont_width = width;
-        romfont_height = height;
+        font_ptr = &a;
     }
 
-    uint8_t font_height() { return height; }
-    uint8_t font_width() { return width; }
-
-    void draw(size_t x, size_t y, char ch, const rgb& color);
+    void draw(size_t x, size_t y, char ch, const rgb& color)
     {
-        for(int i = 0; i < font_width; i++)
+        if(font_ptr == nullptr)
+            return;
+
+        for(int i = 0; i < font_ptr->width(); i++)
         {
-            for(int j = 0; j < font_height; i++)
+            for(int j = 0; j < font_ptr->height(); i++)
             {
                 size_t xindex = x + i;
                 size_t yindex = y + j;
-                if(get_romfont_bit(i, j, ch)
+                if(font_ptr->test_pixel(ch, current_term_status.text_style, (uint8_t)i, (uint8_t)j))
                     buffer->draw(xindex + yindex * buffer->width(), color);
             }
         }
@@ -54,21 +35,66 @@ namespace term
     
     void draw_lc(size_t col, size_t line, char ch, const rgb& color)
     {
-        draw(line * height, col * width, ch, color);
+        if(font != nullptr)
+            draw(line * font_ptr->height(), col * font_ptr->width(), ch, color);
     }
 
     
     void scrolldown(size_t n)
     {
-        buf->scroll(n);    
+        buf->scroll(n);
     }
-
-    static term_status current_term_status;  
 
     void putc(char ch)
     {
-        
+        // not implemented yet
     }
+
+    void putstr(const char* c)
+    {
+        size_t idx = current_term_status.cursor_x + current_term_status.cursor_y * columns();
+        while(*c)
+        {
+            char ch = *c++;
+            switch(ch)
+            {
+                case '\n':
+                    idx = ((idx + lines() - 1) / lines()) * lines();
+                    break;
+                case '\r':
+                    idx = ((idx / lines()) * lines());
+                    break;
+                case '\t':
+                    size_t target = (((idx + 3) >> 2) << 2); // what the fuck?
+                    
+                    if(target >= lines() * columns())
+                    {
+                        target -= columns();
+                        idx -= columns();
+                        scrolldown(1);
+                    }
+
+                    while(idx < target)
+                        buffer->draw_lc(idx++, 0, ch, current_term_status.fg);
+
+                    break;
+                default:
+                    buffer->draw_lc(idx++, 0, ch, current_term_status.fg);
+                
+            }
+            if(idx >= lines() * columns())
+            {
+                idx -= columns();
+                scrolldown(1);
+            }
+        }
+
+        // update positional info
+        current_term_status.cursor_x = idx % columns();
+        current_term_status.cursor_y = idx / columns();
+    }
+
+    
 
     term_status& status()
     {

@@ -3,7 +3,7 @@
 #include <realmode/e820.h>
 #include <realmode/video.h>
 #include <utils.h>
-#include <stage2/driver/disk/disk.h>
+#include <driver/disk/disk.h>
 
 BEGIN_16;
 __asm__ ("jmpl $0x0000, $main");

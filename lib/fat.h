@@ -1,26 +1,9 @@
-#include "fat.h"
-#include <cstdint>
-#include <config.h>
-
-#if !define(FS_FAT)
-namespace fsimpl
-{
-    bool check_fat(uint8_t disk, uint8_t partition)
-    {
-        return false;
-    }
-
-    void* read_fat(uint8_t disk, uint8_t partition, const char* path)
-    {
-        return nullptr;
-    }
-}
-
-#else
+#ifndef __LIB_FAT_H__
+#define __LIB_FAT_H__
 
 namespace fsimpl
 {
-    struct fat32_bpb 
+    struct fat_bpb
     {
         uint8_t jump[3];
         char oem[8];
@@ -36,6 +19,20 @@ namespace fsimpl
         uint16_t heads_count;
         uint32_t hidden_sectors_count;
         uint32_t large_sectors_count;
+    };
+
+    struct fat1n_ebpb
+    {
+        uint8_t drive_number;
+        uint8_t flags;
+        uint8_t signature;
+        uint32_t serial_no;
+        char label[11];
+        char system_id[8];
+    };
+
+    struct fat32_ebpb
+    {
         uint32_t sectors_per_fat_32;
         uint16_t flags;
         uint16_t fat_version_number;
@@ -50,8 +47,13 @@ namespace fsimpl
         char label[11];
         char system_identifier[8];
     } __attribute__((packed));
+    
+    constexpr FAT32_SYSTEM_ID = "FAT32   ";
+    constexpr FAT16_SYSTEM_ID = "FAT16   ";
+    constexpr FAT12_SYSTEM_ID = "FAT12   "; 
 
-    struct fat32_directory_entry 
+
+    struct fat32_directory_entry
     {
         char file_name_and_ext[8 + 3];
         uint8_t attribute;
@@ -62,7 +64,7 @@ namespace fsimpl
         uint32_t file_size_bytes;
     } __attribute__((packed));
 
-    struct fat32_lfn_entry 
+    struct fat32_lfn_entry
     {
         uint8_t sequence_number;
         char name1[10];
@@ -74,17 +76,7 @@ namespace fsimpl
         char name3[4];
     } __attribute__((packed));
 
-
-    bool check_fat(uint8_t disk, uint8_t partition)
-    {
-         
-        
-    }
-
-    void* read_fat(uint8_t disk, uint8_t partition, const char* path)
-    {
-        return nullptr;
-    }
+    bool check_fat_from_buffer(void* buffer);
 }
 
 #endif

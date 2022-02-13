@@ -2,7 +2,7 @@
 #define __LIB_TERM_H__
 #include <cstddef>
 #include <cstdint>
-#include <term_formatting.h>
+#include "term_formatting.h"
 
 namespace term
 {
@@ -17,7 +17,7 @@ namespace term
     };
 
     void set_video_buffer(video_buffer*);
-    void set_font(void* fontbuffer, uint8_t width, uint8_t height, style s);
+    void set_font(const font& f);
 
     uint8_t font_height();
     uint8_t font_width();
@@ -25,8 +25,8 @@ namespace term
     uint8_t screen_height();
     uint8_t screen_width();
 
-    inline uint8_t lines() { return screen_height() / font_height(); }
-    inline uint8_t columns() { return screen_width() / screen_height(); }
+    inline size_t lines() { return screen_height() / font_height(); }
+    inline size_t columns() { return screen_width() / screen_height(); }
 
     // draws text, at char position x y (pixels)
     void draw(size_t x, size_t y, char ch, const rgb& color);
@@ -39,13 +39,9 @@ namespace term
     // cool functions i guess
     void putc(char ch);
 
-    inline void putstr(const char* ch) 
-    {
-        while(*ch)
-            putc(*ch++);
-    }
+    void putstr(const char* c);
 
-    // get terminal color
+    // get terminal status
     term_status& status();
 }
 

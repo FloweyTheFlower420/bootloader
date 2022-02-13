@@ -8,34 +8,34 @@ SECTIONS
     .text :
     {
         code = .;
-	*(.text)
+        *(.text)
     }
 
     .rodata BLOCK(1) : ALIGN(1)
     {
-    	*(.rodata)
+        *(.rodata)
     }
 
     .data BLOCK(1) : ALIGN(1)
     {
-    	data = .;
-    	*(.data)
+        data = .;
+        *(.data)
     }
 
     .bss BLOCK(1) : ALIGN(1)
     {
-    	bss = .;
-    	*(COMMON)
-    	*(.bss)
-    	*(.stack)
+        bss = .;
+        *(COMMON)
+        *(.bss)
+        *(.stack)
     }
 
     end = .;
 
     /DISCARD/ :
     {
-    	*(.comment)
-    	*(.eh_frame)
-    	*(.note.gnu.build-id)
+        *(.comment)
+        *(.eh_frame)
+        s*(.note.gnu.build-id)
     }
 }

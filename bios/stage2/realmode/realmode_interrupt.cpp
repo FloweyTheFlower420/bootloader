@@ -35,10 +35,10 @@ uint16_t pmode_sp = 0x7000;
 cpustate bios_interrupt_pmode(uint8_t n, const cpustate& state)
 {
     BEGIN_32;
-    static uint8_t gdt[] = {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // Null entry
-        0xff, 0xff, 0x00, 0x00, 0x00, 0x9a, 0x8f, 0x00, // code
-        0xff, 0xff, 0x00, 0x00, 0x00, 0x92, 0x8f, 0x00, // data
+    static constexpr uint64_t gdt[] = {
+        0x0000000000000000,
+        0x00009a000000ffff,
+        0x000093000000ffff
     };
 
     struct {
@@ -64,11 +64,11 @@ cpustate bios_interrupt_pmode(uint8_t n, const cpustate& state)
 farjump_16:
     __asm__ __volatile__(
         "mov $0x10, %%ax\n"
-    	"mov %%ax, %%ds\n"
-    	"mov %%ax, %%es\n"
-    	"mov %%ax, %%fs\n"
-    	"mov %%ax, %%gs\n"
-    	"mov %%ax, %%ss\n"
+        "mov %%ax, %%ds\n"
+        "mov %%ax, %%es\n"
+        "mov %%ax, %%fs\n"
+        "mov %%ax, %%gs\n"
+        "mov %%ax, %%ss\n"
         :
         :
         : "ax"
@@ -88,11 +88,11 @@ farjump_16:
 realmode:
     __asm__ __volatile__(
         "xor %%ax, %%ax\n"
-    	"mov %%ax, %%ds\n"
-    	"mov %%ax, %%es\n"
-    	"mov %%ax, %%fs\n"
-    	"mov %%ax, %%gs\n"
-    	"mov %%ax, %%ss\n"
+        "mov %%ax, %%ds\n"
+        "mov %%ax, %%es\n"
+        "mov %%ax, %%fs\n"
+        "mov %%ax, %%gs\n"
+        "mov %%ax, %%ss\n"
         "mov %%sp, pmode_sp\n"
         "mov realmode_sp, %%sp"
         :
@@ -135,10 +135,10 @@ void protected_mode()
 {
     BEGIN_16;
 
-    static uint8_t gdt[] = {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // Null entry
-        0xff, 0xff, 0x00, 0x00, 0x00, 0x9a, 0xCF, 0x00, // code
-        0xff, 0xff, 0x00, 0x00, 0x00, 0x92, 0xCF, 0x00, // data
+    constexpr static uint8_t gdt[] = {
+        0x0000000000000000,
+        0x00cf9a000000ffff,
+        0x00cf93000000ffff
     };
 
     struct {

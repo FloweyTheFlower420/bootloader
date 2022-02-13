@@ -8,6 +8,6 @@ namespace term
             return this->notfound;
        
         size_t index = (size_t)width() * (size_t)y + x;
-        return ((uint8_t*)fonts[s])[bpc() * ch + (index >> 3)] & (1 << (index & 7);
+        return ((uint8_t*)fonts[s])[bpc() * ch + (index >> 3)] & (1 << (index & 7));
     }
 }

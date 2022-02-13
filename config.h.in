@@ -1,0 +1,3 @@
+#cmakedefine 
+#mesondefine @TEST
+#ifdef TASIDH ASD
