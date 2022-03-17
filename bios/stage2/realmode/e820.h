@@ -10,6 +10,12 @@ struct memory_map
     uint32_t extend_bitfield;
 };
 
-memory_map* read_memory_map();
+struct memory_map_entry
+{
+    memory_map data;
+    memory_map_entry* next;
+};
+
+memory_map_entry* read_memory_map();
 
 #endif

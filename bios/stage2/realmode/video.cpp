@@ -1,65 +1,67 @@
 #include "video.h"
-#include <realmode/realmode.h>
-#include <utils.h>
+#include "realmode.h"
+#include <libc.h>
+#include <config.h>
+#include MALLOC_IMPL_PATH
 
 static vbe_controller_info* read_controller_info()
 {
-    auto out = bios_interrupt_pmode(0x10, {.a = 0x4F00, .D = 0x7000});
+    auto out = bios_interrupt_pmode(0x10, {.a = 0x4F00, .D = (uint32_t) REALMODE_BUFFER});
  
     if(out.ax() != 0x004F)
         return nullptr;
 
-    memcpy((void*)0x14000, (void*)0x7000, sizeof(vbe_controller_info));
-
-    return (vbe_controller_info*)(0x14000);
+    void* buffer = alloc::malloc(sizeof(vbe_controller_info));
+    if(buffer)
+        return (vbe_controller_info*) memcpy(buffer, REALMODE_BUFFER, sizeof(vbe_controller_info));
+    return nullptr;
 }
 
 static vbe_mode_info* read_mode_info(uint16_t mode)
 {
-    auto out = bios_interrupt_pmode(0x10, {.a = 0x4F01, .c = mode, .D = 0x7000});
+    auto out = bios_interrupt_pmode(0x10, {.a = 0x4F01, .c = mode, .D = (uint32_t) REALMODE_BUFFER});
 
     if(out.ax() != 0x004F)
         return nullptr;
 
-    memcpy((void*)0x14200, (void*)0x7000, sizeof(vbe_mode_info));
-
-    return (vbe_mode_info*) 0x14200;
+    void* buffer = alloc::malloc(sizeof(vbe_mode_info));
+    if(buffer)
+        return (vbe_mode_info*) memcpy(buffer, REALMODE_BUFFER, sizeof(vbe_mode_info));
+    return nullptr;
 }
 
-static bool set_mode(uint16_t mode)
+static bool set_mode(uint16_t mode, vbe_mode_info* info)
 {
-    mode |= (uint16_t)0x4000;
-    auto out = bios_interrupt_pmode(0x10, {.a = 0x4F02, .b = mode , .d = 0x7000});
+    memcpy(REALMODE_BUFFER, info, sizeof(vbe_mode_info));
+    auto out = bios_interrupt_pmode(0x10, cpustate{
+        .a = 0x4F02, 
+        .b = (uint16_t)(mode | (uint16_t)0x4000),
+        .D = (uint32_t) REALMODE_BUFFER
+    });
     return out.ax() == 0x004F;
 }
 
-bool set_video_mode()
+bool set_video_mode(video_mode_predicate predicate)
 {
     vbe_controller_info* controller = read_controller_info();
-    if(controller == nullptr)
-        return false;
-    vbe_mode_info* mode = nullptr;
+    uint16_t* modes = (uint16_t*)controller->video_mode_ptr.to_ptr();
     uint16_t id;
 
-    uint16_t* modes = (uint16_t*)controller->video_mode_ptr.to_ptr();
-    while((id = *modes) != 0xffff)
-    {
-        mode = read_mode_info(id);
-        if(mode == nullptr)
-                continue;
-        if(
-            (mode->attributes & 0x90) == 0x90 &&
-            (mode->memory_model == 4 || mode->memory_model == 6) &&
-            ((mode->width == 640 && mode->width == 480) || (mode->width == 720 && mode->width == 480))
-        ) {
-            break;
-        }
-        
-        modes++;
-    }
-
-    if(mode == nullptr)
+    if(controller == nullptr)
         return false;
 
-    return set_mode(id);
+    while((id = *modes) != 0xffff)
+    {
+        vbe_mode_info* mode = read_mode_info(id);
+        if((bool)mode & predicate(mode)) 
+        {
+            bool ret = set_mode(id, mode);
+            alloc::free(controller);
+            return ret;
+        }
+        
+        alloc::free(mode);
+        modes++;
+    }
+    return false;
 }

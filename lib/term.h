@@ -11,8 +11,8 @@ namespace term
     {
     public:
         virtual void draw(const rgb&, uint32_t);
-        virtual void height() const;
-        virtual void width() const;
+        virtual size_t height() const;
+        virtual size_t width() const;
         virtual void scroll(size_t) const;
     };
 

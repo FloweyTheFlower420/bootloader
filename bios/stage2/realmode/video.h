@@ -61,6 +61,7 @@ struct vbe_mode_info
     uint8_t reserved1[206];
 } __attribute__ ((packed));
 
-bool set_video_mode();
+using video_mode_predicate = bool (*)(vbe_mode_info*);
+bool set_video_mode(video_mode_predicate);
 
 #endif

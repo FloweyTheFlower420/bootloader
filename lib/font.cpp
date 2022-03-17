@@ -2,7 +2,7 @@
 
 namespace term
 {
-    bool font::test_pixel(char ch, style s, uint8_t x, uint8_t y)
+    bool font::test_pixel(char ch, style s, uint8_t x, uint8_t y) const
     {
         if(fonts[s] == nullptr)
             return this->notfound;

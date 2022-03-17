@@ -8,7 +8,7 @@
 
     mov %dl, 0x1000
 
-    mov $0x3000, %ax
+    mov $0x7000, %ax
     mov %ax, %sp
 
     mov $0x02, %ah

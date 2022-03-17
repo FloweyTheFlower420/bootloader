@@ -29,9 +29,6 @@
     break;
 
 
-uint16_t realmode_sp = 0x3000;
-uint16_t pmode_sp = 0x7000;
-
 cpustate bios_interrupt_pmode(uint8_t n, const cpustate& state)
 {
     BEGIN_32;
@@ -93,8 +90,6 @@ realmode:
         "mov %%ax, %%fs\n"
         "mov %%ax, %%gs\n"
         "mov %%ax, %%ss\n"
-        "mov %%sp, pmode_sp\n"
-        "mov realmode_sp, %%sp"
         :
         :
         : "ax"
@@ -135,7 +130,7 @@ void protected_mode()
 {
     BEGIN_16;
 
-    constexpr static uint8_t gdt[] = {
+    constexpr static uint64_t gdt[] = {
         0x0000000000000000,
         0x00cf9a000000ffff,
         0x00cf93000000ffff
@@ -167,13 +162,11 @@ pmode:
     BEGIN_32;
     __asm__ __volatile__(
         "mov $0x10, %%ax\n"
-    	"mov %%ax, %%ds\n"
-    	"mov %%ax, %%es\n"
-    	"mov %%ax, %%fs\n"
-    	"mov %%ax, %%gs\n"
-    	"mov %%ax, %%ss\n"
-        "mov %%sp, realmode_sp\n"
-        "mov pmode_sp, %%sp"
+        "mov %%ax, %%ds\n"
+        "mov %%ax, %%es\n"
+        "mov %%ax, %%fs\n"
+        "mov %%ax, %%gs\n"
+        "mov %%ax, %%ss\n"
         :
         :
         : "ax"

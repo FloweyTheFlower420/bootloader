@@ -61,7 +61,7 @@ namespace term
         constexpr uint8_t height() const { return font_height; }
         constexpr size_t bpc() const { return font_width * font_height; }
         constexpr void set_font(void* font, style s) { fonts[s] = font; }
-        bool test_pixel(char ch, style s, uint8_t x, uint8_t y) const; // should print the notfound symbol.
+        bool test_pixel(char ch, style s, uint8_t x, uint8_t y) const; // should print the notfound symbol
     };
 }
 

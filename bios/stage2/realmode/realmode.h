@@ -27,11 +27,13 @@ struct cpustate
 void protected_mode(); // enters protected mode
 
 extern "C" {
-    void a20(); // tries to enable the a20 line. Returns true if a20 is enabled
+    void a20();
 }
 
 cpustate bios_interrupt_pmode(uint8_t, const cpustate& state); // calls a bios interrupt from protected mode
 cpustate bios_interrupt_realmode(uint8_t, const cpustate& state); // calls a bios interrupt from real mode
+
+void* const REALMODE_BUFFER = (void*) 0xc000;
 
 #define BEGIN_16 __asm__ __volatile__(".code16\n.code16gcc")
 #define BEGIN_32 __asm__ __volatile__(".code32")

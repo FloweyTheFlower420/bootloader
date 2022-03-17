@@ -1,0 +1,3 @@
+[submodule "lib/memory-allocator"]
+	path = lib/memory-allocator
+	url = https://github.com/FloweyTheFlower420/memory-allocator

@@ -1,3 +1,22 @@
-#cmakedefine 
-#mesondefine @TEST
-#ifdef TASIDH ASD
+#mesondefine VERSION
+
+// filesystem support
+#mesondefine ENABLE_FAT
+#mesondefine ENABLE_EXT
+
+// which malloc to use. Currently uses llmalloc
+#mesondefine MALLOC_IMPL_PATH
+// build-mode dependant
+#mesondefine DISK_IMPL_PATH
+// --- BIOS/MBR specfic ---
+
+#mesondefine BIOS_BOOT_AS_VBR
+#mesondefine BIOS_CHAINLOAD_VBR
+
+// enables BIOS GPT support
+#mesondefine BIOS_GPT
+
+// BIOS font configuration
+#mesondefine BIOS_FONT_PATH
+
+#mesondefine BIOS_DISK_PATIENCE
