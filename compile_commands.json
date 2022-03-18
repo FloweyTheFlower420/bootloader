@@ -1,0 +1,92 @@
+[
+  {
+    "directory": "/home/flowey/dev/kernel-dev/bootloader/build",
+    "command": "c++ -Iboot.bin.p -I. -I.. -I/home/flowey/dev/kernel-dev/bootloader/lib/ -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -fno-rtti -fno-exceptions -Os -ffreestanding -fno-PIC -no-pie -fno-exceptions -Wno-ignored-attributes -Wall -fno-stack-protector -fcf-protection=none -fno-threadsafe-statics -mno-sse -mno-sse2 -mno-mmx -std=c++20 -mno-80387 -m32 -march=i386 -MD -MQ boot.bin.p/bios_boot_boot.S.o -MF boot.bin.p/bios_boot_boot.S.o.d -o boot.bin.p/bios_boot_boot.S.o -c ../bios/boot/boot.S",
+    "file": "../bios/boot/boot.S",
+    "output": "boot.bin.p/bios_boot_boot.S.o"
+  },
+  {
+    "directory": "/home/flowey/dev/kernel-dev/bootloader/build",
+    "command": "c++ -Ibios-stage2.img.p -I. -I.. -I/home/flowey/dev/kernel-dev/bootloader/bios/stage2 -I/home/flowey/dev/kernel-dev/bootloader/lib/ -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -fno-rtti -fno-exceptions -Os -ffreestanding -fno-PIC -no-pie -fno-exceptions -Wno-ignored-attributes -Wall -fno-stack-protector -fcf-protection=none -fno-threadsafe-statics -mno-sse -mno-sse2 -mno-mmx -std=c++20 -mno-80387 -m32 -march=i386 -MD -MQ bios-stage2.img.p/bios_stage2_main.cpp.o -MF bios-stage2.img.p/bios_stage2_main.cpp.o.d -o bios-stage2.img.p/bios_stage2_main.cpp.o -c ../bios/stage2/main.cpp",
+    "file": "../bios/stage2/main.cpp",
+    "output": "bios-stage2.img.p/bios_stage2_main.cpp.o"
+  },
+  {
+    "directory": "/home/flowey/dev/kernel-dev/bootloader/build",
+    "command": "c++ -Ibios-stage2.img.p -I. -I.. -I/home/flowey/dev/kernel-dev/bootloader/bios/stage2 -I/home/flowey/dev/kernel-dev/bootloader/lib/ -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -fno-rtti -fno-exceptions -Os -ffreestanding -fno-PIC -no-pie -fno-exceptions -Wno-ignored-attributes -Wall -fno-stack-protector -fcf-protection=none -fno-threadsafe-statics -mno-sse -mno-sse2 -mno-mmx -std=c++20 -mno-80387 -m32 -march=i386 -MD -MQ bios-stage2.img.p/bios_stage2_realmode_e820.cpp.o -MF bios-stage2.img.p/bios_stage2_realmode_e820.cpp.o.d -o bios-stage2.img.p/bios_stage2_realmode_e820.cpp.o -c ../bios/stage2/realmode/e820.cpp",
+    "file": "../bios/stage2/realmode/e820.cpp",
+    "output": "bios-stage2.img.p/bios_stage2_realmode_e820.cpp.o"
+  },
+  {
+    "directory": "/home/flowey/dev/kernel-dev/bootloader/build",
+    "command": "c++ -Ibios-stage2.img.p -I. -I.. -I/home/flowey/dev/kernel-dev/bootloader/bios/stage2 -I/home/flowey/dev/kernel-dev/bootloader/lib/ -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -fno-rtti -fno-exceptions -Os -ffreestanding -fno-PIC -no-pie -fno-exceptions -Wno-ignored-attributes -Wall -fno-stack-protector -fcf-protection=none -fno-threadsafe-statics -mno-sse -mno-sse2 -mno-mmx -std=c++20 -mno-80387 -m32 -march=i386 -MD -MQ bios-stage2.img.p/bios_stage2_realmode_realmode.cpp.o -MF bios-stage2.img.p/bios_stage2_realmode_realmode.cpp.o.d -o bios-stage2.img.p/bios_stage2_realmode_realmode.cpp.o -c ../bios/stage2/realmode/realmode.cpp",
+    "file": "../bios/stage2/realmode/realmode.cpp",
+    "output": "bios-stage2.img.p/bios_stage2_realmode_realmode.cpp.o"
+  },
+  {
+    "directory": "/home/flowey/dev/kernel-dev/bootloader/build",
+    "command": "c++ -Ibios-stage2.img.p -I. -I.. -I/home/flowey/dev/kernel-dev/bootloader/bios/stage2 -I/home/flowey/dev/kernel-dev/bootloader/lib/ -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -fno-rtti -fno-exceptions -Os -ffreestanding -fno-PIC -no-pie -fno-exceptions -Wno-ignored-attributes -Wall -fno-stack-protector -fcf-protection=none -fno-threadsafe-statics -mno-sse -mno-sse2 -mno-mmx -std=c++20 -mno-80387 -m32 -march=i386 -MD -MQ bios-stage2.img.p/bios_stage2_realmode_video.cpp.o -MF bios-stage2.img.p/bios_stage2_realmode_video.cpp.o.d -o bios-stage2.img.p/bios_stage2_realmode_video.cpp.o -c ../bios/stage2/realmode/video.cpp",
+    "file": "../bios/stage2/realmode/video.cpp",
+    "output": "bios-stage2.img.p/bios_stage2_realmode_video.cpp.o"
+  },
+  {
+    "directory": "/home/flowey/dev/kernel-dev/bootloader/build",
+    "command": "c++ -Ibios-stage2.img.p -I. -I.. -I/home/flowey/dev/kernel-dev/bootloader/bios/stage2 -I/home/flowey/dev/kernel-dev/bootloader/lib/ -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -fno-rtti -fno-exceptions -Os -ffreestanding -fno-PIC -no-pie -fno-exceptions -Wno-ignored-attributes -Wall -fno-stack-protector -fcf-protection=none -fno-threadsafe-statics -mno-sse -mno-sse2 -mno-mmx -std=c++20 -mno-80387 -m32 -march=i386 -MD -MQ bios-stage2.img.p/bios_stage2_utils.cpp.o -MF bios-stage2.img.p/bios_stage2_utils.cpp.o.d -o bios-stage2.img.p/bios_stage2_utils.cpp.o -c ../bios/stage2/utils.cpp",
+    "file": "../bios/stage2/utils.cpp",
+    "output": "bios-stage2.img.p/bios_stage2_utils.cpp.o"
+  },
+  {
+    "directory": "/home/flowey/dev/kernel-dev/bootloader/build",
+    "command": "c++ -Ibios-stage2.img.p -I. -I.. -I/home/flowey/dev/kernel-dev/bootloader/bios/stage2 -I/home/flowey/dev/kernel-dev/bootloader/lib/ -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -fno-rtti -fno-exceptions -Os -ffreestanding -fno-PIC -no-pie -fno-exceptions -Wno-ignored-attributes -Wall -fno-stack-protector -fcf-protection=none -fno-threadsafe-statics -mno-sse -mno-sse2 -mno-mmx -std=c++20 -mno-80387 -m32 -march=i386 -MD -MQ bios-stage2.img.p/bios_stage2_driver_disk_disk.cpp.o -MF bios-stage2.img.p/bios_stage2_driver_disk_disk.cpp.o.d -o bios-stage2.img.p/bios_stage2_driver_disk_disk.cpp.o -c ../bios/stage2/driver/disk/disk.cpp",
+    "file": "../bios/stage2/driver/disk/disk.cpp",
+    "output": "bios-stage2.img.p/bios_stage2_driver_disk_disk.cpp.o"
+  },
+  {
+    "directory": "/home/flowey/dev/kernel-dev/bootloader/build",
+    "command": "c++ -Ibios-stage2.img.p -I. -I.. -I/home/flowey/dev/kernel-dev/bootloader/bios/stage2 -I/home/flowey/dev/kernel-dev/bootloader/lib/ -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -fno-rtti -fno-exceptions -Os -ffreestanding -fno-PIC -no-pie -fno-exceptions -Wno-ignored-attributes -Wall -fno-stack-protector -fcf-protection=none -fno-threadsafe-statics -mno-sse -mno-sse2 -mno-mmx -std=c++20 -mno-80387 -m32 -march=i386 -MD -MQ bios-stage2.img.p/lib_debug.cpp.o -MF bios-stage2.img.p/lib_debug.cpp.o.d -o bios-stage2.img.p/lib_debug.cpp.o -c ../lib/debug.cpp",
+    "file": "../lib/debug.cpp",
+    "output": "bios-stage2.img.p/lib_debug.cpp.o"
+  },
+  {
+    "directory": "/home/flowey/dev/kernel-dev/bootloader/build",
+    "command": "c++ -Ibios-stage2.img.p -I. -I.. -I/home/flowey/dev/kernel-dev/bootloader/bios/stage2 -I/home/flowey/dev/kernel-dev/bootloader/lib/ -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -fno-rtti -fno-exceptions -Os -ffreestanding -fno-PIC -no-pie -fno-exceptions -Wno-ignored-attributes -Wall -fno-stack-protector -fcf-protection=none -fno-threadsafe-statics -mno-sse -mno-sse2 -mno-mmx -std=c++20 -mno-80387 -m32 -march=i386 -MD -MQ bios-stage2.img.p/lib_term.cpp.o -MF bios-stage2.img.p/lib_term.cpp.o.d -o bios-stage2.img.p/lib_term.cpp.o -c ../lib/term.cpp",
+    "file": "../lib/term.cpp",
+    "output": "bios-stage2.img.p/lib_term.cpp.o"
+  },
+  {
+    "directory": "/home/flowey/dev/kernel-dev/bootloader/build",
+    "command": "c++ -Ibios-stage2.img.p -I. -I.. -I/home/flowey/dev/kernel-dev/bootloader/bios/stage2 -I/home/flowey/dev/kernel-dev/bootloader/lib/ -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -fno-rtti -fno-exceptions -Os -ffreestanding -fno-PIC -no-pie -fno-exceptions -Wno-ignored-attributes -Wall -fno-stack-protector -fcf-protection=none -fno-threadsafe-statics -mno-sse -mno-sse2 -mno-mmx -std=c++20 -mno-80387 -m32 -march=i386 -MD -MQ bios-stage2.img.p/lib_libc.cpp.o -MF bios-stage2.img.p/lib_libc.cpp.o.d -o bios-stage2.img.p/lib_libc.cpp.o -c ../lib/libc.cpp",
+    "file": "../lib/libc.cpp",
+    "output": "bios-stage2.img.p/lib_libc.cpp.o"
+  },
+  {
+    "directory": "/home/flowey/dev/kernel-dev/bootloader/build",
+    "command": "c++ -Ibios-stage2.img.p -I. -I.. -I/home/flowey/dev/kernel-dev/bootloader/bios/stage2 -I/home/flowey/dev/kernel-dev/bootloader/lib/ -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -fno-rtti -fno-exceptions -Os -ffreestanding -fno-PIC -no-pie -fno-exceptions -Wno-ignored-attributes -Wall -fno-stack-protector -fcf-protection=none -fno-threadsafe-statics -mno-sse -mno-sse2 -mno-mmx -std=c++20 -mno-80387 -m32 -march=i386 -MD -MQ bios-stage2.img.p/lib_memory-allocator_rbtree-memory-allocator_alloc.cpp.o -MF bios-stage2.img.p/lib_memory-allocator_rbtree-memory-allocator_alloc.cpp.o.d -o bios-stage2.img.p/lib_memory-allocator_rbtree-memory-allocator_alloc.cpp.o -c ../lib/memory-allocator/rbtree-memory-allocator/alloc.cpp",
+    "file": "../lib/memory-allocator/rbtree-memory-allocator/alloc.cpp",
+    "output": "bios-stage2.img.p/lib_memory-allocator_rbtree-memory-allocator_alloc.cpp.o"
+  },
+  {
+    "directory": "/home/flowey/dev/kernel-dev/bootloader/build",
+    "command": "c++ -Ibios-stage2.img.p -I. -I.. -I/home/flowey/dev/kernel-dev/bootloader/bios/stage2 -I/home/flowey/dev/kernel-dev/bootloader/lib/ -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -fno-rtti -fno-exceptions -Os -ffreestanding -fno-PIC -no-pie -fno-exceptions -Wno-ignored-attributes -Wall -fno-stack-protector -fcf-protection=none -fno-threadsafe-statics -mno-sse -mno-sse2 -mno-mmx -std=c++20 -mno-80387 -m32 -march=i386 -MD -MQ bios-stage2.img.p/lib_memory-allocator_linked-list-memory-allocator_alloc.cpp.o -MF bios-stage2.img.p/lib_memory-allocator_linked-list-memory-allocator_alloc.cpp.o.d -o bios-stage2.img.p/lib_memory-allocator_linked-list-memory-allocator_alloc.cpp.o -c ../lib/memory-allocator/linked-list-memory-allocator/alloc.cpp",
+    "file": "../lib/memory-allocator/linked-list-memory-allocator/alloc.cpp",
+    "output": "bios-stage2.img.p/lib_memory-allocator_linked-list-memory-allocator_alloc.cpp.o"
+  },
+  {
+    "directory": "/home/flowey/dev/kernel-dev/bootloader/build",
+    "command": "c++ -Ibios-stage2.img.p -I. -I.. -I/home/flowey/dev/kernel-dev/bootloader/bios/stage2 -I/home/flowey/dev/kernel-dev/bootloader/lib/ -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -fno-rtti -fno-exceptions -Os -ffreestanding -fno-PIC -no-pie -fno-exceptions -Wno-ignored-attributes -Wall -fno-stack-protector -fcf-protection=none -fno-threadsafe-statics -mno-sse -mno-sse2 -mno-mmx -std=c++20 -mno-80387 -m32 -march=i386 -MD -MQ bios-stage2.img.p/lib_font.cpp.o -MF bios-stage2.img.p/lib_font.cpp.o.d -o bios-stage2.img.p/lib_font.cpp.o -c ../lib/font.cpp",
+    "file": "../lib/font.cpp",
+    "output": "bios-stage2.img.p/lib_font.cpp.o"
+  },
+  {
+    "directory": "/home/flowey/dev/kernel-dev/bootloader/build",
+    "command": "c++ -Ibios-stage2.img.p -I. -I.. -I/home/flowey/dev/kernel-dev/bootloader/bios/stage2 -I/home/flowey/dev/kernel-dev/bootloader/lib/ -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -fno-rtti -fno-exceptions -Os -ffreestanding -fno-PIC -no-pie -fno-exceptions -Wno-ignored-attributes -Wall -fno-stack-protector -fcf-protection=none -fno-threadsafe-statics -mno-sse -mno-sse2 -mno-mmx -std=c++20 -mno-80387 -m32 -march=i386 -MD -MQ bios-stage2.img.p/lib_fs_fat.cpp.o -MF bios-stage2.img.p/lib_fs_fat.cpp.o.d -o bios-stage2.img.p/lib_fs_fat.cpp.o -c ../lib/fs/fat.cpp",
+    "file": "../lib/fs/fat.cpp",
+    "output": "bios-stage2.img.p/lib_fs_fat.cpp.o"
+  },
+  {
+    "directory": "/home/flowey/dev/kernel-dev/bootloader/build",
+    "command": "c++ -Ibios-stage2.img.p -I. -I.. -I/home/flowey/dev/kernel-dev/bootloader/bios/stage2 -I/home/flowey/dev/kernel-dev/bootloader/lib/ -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -g -fno-rtti -fno-exceptions -Os -ffreestanding -fno-PIC -no-pie -fno-exceptions -Wno-ignored-attributes -Wall -fno-stack-protector -fcf-protection=none -fno-threadsafe-statics -mno-sse -mno-sse2 -mno-mmx -std=c++20 -mno-80387 -m32 -march=i386 -MD -MQ bios-stage2.img.p/bios_stage2_realmode_a20.S.o -MF bios-stage2.img.p/bios_stage2_realmode_a20.S.o.d -o bios-stage2.img.p/bios_stage2_realmode_a20.S.o -c ../bios/stage2/realmode/a20.S",
+    "file": "../bios/stage2/realmode/a20.S",
+    "output": "bios-stage2.img.p/bios_stage2_realmode_a20.S.o"
+  }
+]

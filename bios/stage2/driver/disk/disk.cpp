@@ -1,9 +1,9 @@
 #include "disk.h"
-#include <diskapi.h>
-#include <realmode/realmode.h>
-#include <new>
-#include <libc.h>
 #include <config.h>
+#include <diskapi.h>
+#include <libc.h>
+#include <new>
+#include <realmode/realmode.h>
 #include <utils.h>
 #include MALLOC_IMPL_PATH
 
@@ -34,7 +34,7 @@ disk_driver::disk_driver(uint8_t id) : id(id)
     disk_info_packet info;
     // use bios to get disk data
     auto out = bios_interrupt_pmode(0x13, {.a = 0x48, .d = id, .S = (uint32_t)&info});
-    if(!out.carry() || out.ah() != 0)
+    if (!out.carry() || out.ah() != 0)
     {
         valid = false;
         return;
@@ -49,7 +49,7 @@ disk_driver::disk_driver(uint8_t id) : id(id)
 void disk_driver::read(size_t bytes, size_t offset, void* buf) const
 {
     auto patience = BIOS_DISK_PATIENCE;
-    
+
     char* dest = (char*)buf;
     char* src = (char*)io_buffer;
     uint64_t sector = offset / cache_sector_size;
@@ -57,27 +57,30 @@ void disk_driver::read(size_t bytes, size_t offset, void* buf) const
     src += start_block_offset;
     size_t n = min(cache_sector_size - start_block_offset, bytes);
 
-    while(bytes > 0)
+    while (bytes > 0)
     {
         disk_address_packet dap{0x10, 0, 1, (uint32_t)src, sector};
-        while(patience--)
+        while (patience--)
         {
             auto out = bios_interrupt_pmode(0x13, {.a = 0x42, .d = id, .S = (uint32_t)&dap});
-            if(out.ah() == 0 && !out.carry())
+            if (out.ah() == 0 && !out.carry())
             {
                 memcpy(dest, src, n);
                 dest += n;
                 bytes -= n;
                 n = min(cache_sector_size, bytes);
-                src = (char*) io_buffer;
+                src = (char*)io_buffer;
 
                 break;
             }
         }
 
-        if(!patience)
+        if (!patience)
             panic("Disk IO error");
     }
 }
 
- disk_driver::~disk_driver() { alloc::free(io_buffer); }
+disk_driver::~disk_driver()
+{
+    alloc::free(io_buffer);
+}

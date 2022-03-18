@@ -1,17 +1,17 @@
 #include <cstdint>
-#include <realmode/realmode.h>
+#include <driver/disk/disk.h>
 #include <realmode/e820.h>
+#include <realmode/realmode.h>
 #include <realmode/video.h>
 #include <utils.h>
-#include <driver/disk/disk.h>
 
 BEGIN_16;
-__asm__ ("jmpl $0x0000, $main");
+__asm__("jmpl $0x0000, $main");
 
 // 0x2000 - real mode stack pointer
 // 0x3000 - protected mode stack pointer
 
-struct 
+struct
 {
     uint32_t loaded_address; // DONE
     uint32_t loaded_size;
@@ -27,9 +27,8 @@ struct
 
 static bool check_vbe_mode(vbe_mode_info* mode)
 {
-    return (mode->attributes & 0x90) == 0x90 &&
-           (mode->memory_model == 4 || mode->memory_model == 6) &&
-           ((mode->width == 640 && mode->width == 480) || (mode->width == 720 && mode->width == 480)); 
+    return (mode->attributes & 0x90) == 0x90 && (mode->memory_model == 4 || mode->memory_model == 6) &&
+           ((mode->width == 640 && mode->width == 480) || (mode->width == 720 && mode->width == 480));
 }
 
 [[noreturn]] void main()
@@ -39,16 +38,15 @@ static bool check_vbe_mode(vbe_mode_info* mode)
     BEGIN_32;
     check_for_long_mode();
     bootloader_packet.mmap_ptr = read_memory_map();
-    if((bootloader_packet.has_video_mode = set_video_mode(+[](vbe_mode_info* mode) {
-        return (mode->attributes & 0x90) == 0x90 &&
-               (mode->memory_model == 4 || mode->memory_model == 6) &&
-               ((mode->width == 640 && mode->width == 480) || (mode->width == 720 && mode->width == 480));
-    })))
+    if ((bootloader_packet.has_video_mode = set_video_mode(+[](vbe_mode_info* mode) {
+             return (mode->attributes & 0x90) == 0x90 && (mode->memory_model == 4 || mode->memory_model == 6) &&
+                    ((mode->width == 640 && mode->width == 480) || (mode->width == 720 && mode->width == 480));
+         })))
     {
-        bootloader_packet.controller = (vbe_controller_info*) 0x14000;
-        bootloader_packet.mode = (vbe_mode_info*) 0x14200;
+        bootloader_packet.controller = (vbe_controller_info*)0x14000;
+        bootloader_packet.mode = (vbe_mode_info*)0x14200;
     }
-    
+
     __builtin_unreachable();
 }
 

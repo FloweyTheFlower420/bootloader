@@ -18,29 +18,28 @@ namespace term
 
     void draw(size_t x, size_t y, char ch, const rgb& color)
     {
-        if(font_ptr == nullptr)
+        if (font_ptr == nullptr)
             return;
 
-        for(int i = 0; i < font_ptr->width(); i++)
+        for (int i = 0; i < font_ptr->width(); i++)
         {
-            for(int j = 0; j < font_ptr->height(); i++)
+            for (int j = 0; j < font_ptr->height(); i++)
             {
                 size_t xindex = x + i;
                 size_t yindex = y + j;
-                if(font_ptr->test_pixel(ch, current_term_status.text_style, (uint8_t)i, (uint8_t)j))
+                if (font_ptr->test_pixel(ch, current_term_status.text_style, (uint8_t)i, (uint8_t)j))
                     buffer->draw(color, xindex + yindex * buffer->width());
             }
         }
     }
-    
+
     void draw_lc(size_t col, size_t line, char ch, const rgb& color)
     {
-        
-        if(font_ptr != nullptr)
+
+        if (font_ptr != nullptr)
             draw(line * font_ptr->height(), col * font_ptr->width(), ch, color);
     }
 
-    
     void scrolldown(size_t n)
     {
         buffer->scroll(n);
@@ -54,36 +53,35 @@ namespace term
     void putstr(const char* c)
     {
         size_t idx = current_term_status.cursor_x + current_term_status.cursor_y * columns();
-        while(*c)
+        while (*c)
         {
             char ch = *c++;
-            switch(ch)
+            switch (ch)
             {
-                case '\n':
-                    idx = ((idx + lines() - 1) / lines()) * lines();
-                    break;
-                case '\r':
-                    idx = ((idx / lines()) * lines());
-                    break;
-                /*case '\t':
-                    size_t target = (((idx + 3) >> 2) << 2); // what the fuck?
-                    
-                    if(target >= lines() * columns())
-                    {
-                        target -= columns();
-                        idx -= columns();
-                        scrolldown(1);
-                    }
+            case '\n':
+                idx = ((idx + lines() - 1) / lines()) * lines();
+                break;
+            case '\r':
+                idx = ((idx / lines()) * lines());
+                break;
+            /*case '\t':
+                size_t target = (((idx + 3) >> 2) << 2); // what the fuck?
 
-                    while(idx < target)
-                        draw_lc(idx++, 0, ch, current_term_status.fg);
+                if(target >= lines() * columns())
+                {
+                    target -= columns();
+                    idx -= columns();
+                    scrolldown(1);
+                }
 
-                    break;*/
-                default:
+                while(idx < target)
                     draw_lc(idx++, 0, ch, current_term_status.fg);
-                
+
+                break;*/
+            default:
+                draw_lc(idx++, 0, ch, current_term_status.fg);
             }
-            if(idx >= lines() * columns())
+            if (idx >= lines() * columns())
             {
                 idx -= columns();
                 scrolldown(1);
@@ -93,12 +91,27 @@ namespace term
         // update positional info
         current_term_status.cursor_x = idx % columns();
         current_term_status.cursor_y = idx / columns();
-    } 
+    }
 
-    term_status& status() { return current_term_status; }
-    uint8_t font_height() { return font_ptr == nullptr ? 0 : font_ptr->height(); }
-    uint8_t font_width() { return font_ptr == nullptr ? 0 : font_ptr->width(); }
+    term_status& status()
+    {
+        return current_term_status;
+    }
+    uint8_t font_height()
+    {
+        return font_ptr == nullptr ? 0 : font_ptr->height();
+    }
+    uint8_t font_width()
+    {
+        return font_ptr == nullptr ? 0 : font_ptr->width();
+    }
 
-    uint8_t screen_height() { return buffer->height(); }
-    uint8_t screen_width() { return buffer->width(); }
-}
+    uint8_t screen_height()
+    {
+        return buffer->height();
+    }
+    uint8_t screen_width()
+    {
+        return buffer->width();
+    }
+} // namespace term

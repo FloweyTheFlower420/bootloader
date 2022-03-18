@@ -6,13 +6,13 @@
 namespace fsimpl
 {
     // utils
-    template<typename T, typename U>
+    template <typename T, typename U>
     constexpr T div_roundup(T t, U u)
     {
         return (t + u - 1) / u;
     }
 
-    template<typename T>
+    template <typename T>
     constexpr T max(T t1, T t2)
     {
         return t1 > t2 ? t1 : t2;
@@ -35,7 +35,7 @@ namespace fsimpl
             bool is_directory;
             size_t file_size;
         };
-        
+
         fs::disk_helper disk;
         // Bytes per FAT sector
         uint16_t bps;
@@ -53,9 +53,18 @@ namespace fsimpl
         uint32_t root_size;
         fat_type type;
 
-        inline size_t cluster_to_sector(size_t cluster) { return cluster * spc; }
-        inline uint64_t sector_to_byte(size_t sector) { return (uint64_t) sector * bps; }
-        inline uint64_t cluster_to_byte(size_t cluster) { return (uint64_t) cluster * spc * bps; }
+        inline size_t cluster_to_sector(size_t cluster)
+        {
+            return cluster * spc;
+        }
+        inline uint64_t sector_to_byte(size_t sector)
+        {
+            return (uint64_t)sector * bps;
+        }
+        inline uint64_t cluster_to_byte(size_t cluster)
+        {
+            return (uint64_t)cluster * spc * bps;
+        }
 
         size_t next_cluster(size_t cluster);
         size_t cluster_to_real(size_t cluster);
@@ -64,7 +73,7 @@ namespace fsimpl
 
         inline dirent_info first_cluster_of_smart(const char* segment, size_t cluster, bool is_root)
         {
-            if(is_root && type != fat_type::FAT32)
+            if (is_root && type != fat_type::FAT32)
                 return first_cluster_of_root_legacy(segment);
             return first_cluster_of(segment, cluster);
         }
@@ -73,12 +82,12 @@ namespace fsimpl
         static constexpr const char* FAT32_SYSTEM_ID = "FAT32   ";
         static constexpr const char* FAT16_SYSTEM_ID = "FAT16   ";
         static constexpr const char* FAT12_SYSTEM_ID = "FAT12   ";
-        static constexpr size_t READ_FAILED = (size_t) -1;
+        static constexpr size_t READ_FAILED = (size_t)-1;
 
         fat_filesystem(uint64_t offset, fs::disk_driver& driver);
 
         size_t read(const char* filename, size_t n, void* buffer);
     };
-}
+} // namespace fsimpl
 
 #endif
